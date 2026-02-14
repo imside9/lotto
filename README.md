@@ -48,6 +48,19 @@ npm run build
 
 - Build command: `npm run build`
 - Build output directory: `dist`
+- 배포 소스는 반드시 `dist`를 사용해야 합니다. 프로젝트 루트(`/src/main.tsx`)를 직접 서빙하면 브라우저가 TSX 모듈을 로드하지 못해 MIME 오류가 발생합니다.
+
+## 배포 오류 트러블슈팅
+
+- 오류: `Failed to load module script ... MIME type of "application/octet-stream"`  
+  점검:
+  - Cloudflare Pages의 Build output directory가 `dist`인지 확인
+  - `dist/index.html`이 `/assets/*.js`를 참조하는지 확인
+  - `dist/_headers`가 배포에 포함되어 JS/CSS MIME이 설정되는지 확인
+- 오류: `net::ERR_BLOCKED_BY_CLIENT`  
+  점검:
+  - 브라우저 광고 차단/보안 확장 프로그램을 끄고 재시도
+  - 시크릿 모드 또는 다른 브라우저에서 동일 URL 재확인
 
 ## 주의
 
