@@ -23,6 +23,17 @@ npm run build
 
 빌드 산출물은 `dist` 디렉터리에 생성됩니다.
 
+배포 전 검증:
+
+```bash
+npm run verify
+```
+
+이 명령은 빌드 후 아래를 자동 확인합니다.
+- `dist/index.html`이 `/src/main.tsx`를 참조하지 않는지
+- `dist/index.html`이 `/assets/*.js`를 참조하는지
+- `dist/_headers`가 존재하는지
+
 ## 핵심 동작
 
 - 첫 화면에서 시작 버튼 클릭
@@ -46,7 +57,7 @@ npm run build
 
 ## Cloudflare Pages 설정
 
-- Framework preset: `Vite`
+- Framework preset: `None` 또는 `Custom` (VitePress 아님)
 - Build command: `npm run build` (Cloudflare Pages 대시보드에서 설정)
 - Build output directory: `dist`
 - Root directory: 저장소 루트
