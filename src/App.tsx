@@ -2,6 +2,7 @@
 import {
   DISCLAIMER,
   HERO_HINT,
+  LOADING_MESSAGES,
   QUESTION_HEADER,
   QUESTIONS,
   RESULT_MESSAGE,
@@ -22,6 +23,7 @@ function App() {
   const [selected, setSelected] = useState<SelectedAnswer[]>([])
   const [result, setResult] = useState<ResultState | null>(null)
   const [isCalculating, setIsCalculating] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0])
   const [copyStatus, setCopyStatus] = useState<'idle' | 'done' | 'fail'>('idle')
 
   const currentQuestion = useMemo(() => {
@@ -37,6 +39,7 @@ function App() {
     setResult(null)
     setCopyStatus('idle')
     setIsCalculating(false)
+    setLoadingMessage(LOADING_MESSAGES[0])
   }
 
   function handleStart() {
@@ -58,16 +61,34 @@ function App() {
     }
 
     setIsCalculating(true)
+    let loadingInterval: number | undefined
     try {
       const seed = buildSeed(nextSelected)
-      const [sets, percent] = await Promise.all([generateNumberSets(seed, 3), generatePercent(seed)])
+      const startTime = Date.now()
+      loadingInterval = window.setInterval(() => {
+        const randomIdx = Math.floor(Math.random() * LOADING_MESSAGES.length)
+        setLoadingMessage(LOADING_MESSAGES[randomIdx])
+      }, 800)
 
+      const [sets, percent] = await Promise.all([generateNumberSets(seed, 3), generatePercent(seed)])
+      const elapsed = Date.now() - startTime
+      const remain = Math.max(0, 5000 - elapsed)
+      if (remain > 0) {
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, remain)
+        })
+      }
       setResult({
         sets,
         percent,
       })
       setStep('result')
+    } catch {
+      setLoadingMessage('행운 데이터를 다시 정렬 중이에요. 잠시만 기다려 주세요.')
     } finally {
+      if (loadingInterval !== undefined) {
+        window.clearInterval(loadingInterval)
+      }
       setIsCalculating(false)
     }
   }
@@ -121,7 +142,7 @@ function App() {
         </section>
       ) : null}
 
-      {typeof step === 'number' && step > 0 && currentQuestion ? (
+      {typeof step === 'number' && step > 0 && currentQuestion && !isCalculating ? (
         <section className="panel question-panel" key={`${currentQuestion.id}-${step}`}>
           <div className="question-nav">
             <button
@@ -153,8 +174,24 @@ function App() {
         </section>
       ) : null}
 
+      {isCalculating ? (
+        <section className="panel loading-panel" aria-live="polite">
+          <p className="loading-emoji" aria-hidden>
+            🌀🍀
+          </p>
+          <div className="spinner" aria-hidden />
+          <p className="loading-title">행운 데이터 분석 중...</p>
+          <p className="loading-message">{loadingMessage}</p>
+        </section>
+      ) : null}
+
       {step === 'result' && result ? (
         <section className="panel result-panel">
+          <div className="confetti-layer" aria-hidden>
+            {Array.from({ length: 18 }).map((_, idx) => (
+              <span className={`confetti confetti-${idx % 6}`} key={`confetti-${idx}`} />
+            ))}
+          </div>
           <p className="lucky-emoji" aria-hidden>
             🍀✨
           </p>

@@ -6,6 +6,18 @@ export const HERO_HINT = '당신의 지금 상황에 딱 맞는 번호를 추천
 export const QUESTION_HEADER = '🍀 행운을 빚기 위한 상태 체크 중!'
 export const RESULT_MESSAGE = '지금 당신의 상태에 딱 맞는 로또 조합을 찾았어요!'
 export const DISCLAIMER = '본 서비스는 재미용이며 실제 당첨 확률과 무관합니다.'
+export const LOADING_MESSAGES = [
+  '당신의 오늘 데이터를 살펴보며 행운 지도를 펴는 중이에요.',
+  '생활 패턴에서 반짝이는 숫자 조각을 채집하는 중입니다.',
+  '지금 분위기에 맞는 럭키 파동을 조율하고 있어요.',
+  '오늘의 리듬을 숫자 코드로 바꾸는 작업을 진행 중입니다.',
+  '작은 습관들을 모아 가장 어울리는 번호 결을 찾고 있어요.',
+  '당신의 선택을 바탕으로 행운 엔진이 회전 중입니다.',
+  '오늘의 기운을 압축해 세트별 후보를 정리하고 있어요.',
+  '지금 이 순간에 맞춘 숫자 조합을 세심하게 다듬는 중입니다.',
+  '일상 데이터와 감각 데이터를 섞어 행운 비율을 계산 중이에요.',
+  '마지막 점검 중! 당신에게 맞는 번호 세트를 마무리합니다.',
+]
 
 export const QUESTIONS: Question[] = [
   {
@@ -72,11 +84,12 @@ export const QUESTIONS: Question[] = [
   {
     id: 'Q7',
     category: 'concrete',
-    text: '최근 연락은 누가 먼저 했나요?',
+    text: '최근 대화한 상대는 누구인가요?',
     options: [
-      { id: 0, label: '내가 먼저' },
-      { id: 1, label: '상대가 먼저' },
-      { id: 2, label: '연락 없음' },
+      { id: 0, label: '👨‍👩‍👧 가족' },
+      { id: 1, label: '🧑‍🤝‍🧑 친구' },
+      { id: 2, label: '💼 학교/직장 동료' },
+      { id: 3, label: '🥲 기억이 안남 ㅠ_ㅠ' },
     ],
   },
   {
