@@ -1,0 +1,30 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF3E6"/>
+      <stop offset="1" stop-color="#E8F6FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="36" fill="url(#bg)"/>
+  <circle cx="1080" cy="86" r="100" fill="#FFE2A9" fill-opacity="0.65"/>
+  <circle cx="130" cy="565" r="120" fill="#C6ECFF" fill-opacity="0.7"/>
+
+  <text x="96" y="170" fill="#E8644E" font-size="34" font-weight="700" font-family="Pretendard, 'Noto Sans KR', sans-serif">
+    Today’s Lucky Mixer
+  </text>
+  <text x="96" y="262" fill="#1F2E42" font-size="72" font-weight="800" font-family="Pretendard, 'Noto Sans KR', sans-serif">
+    지금 이 순간!
+  </text>
+  <text x="96" y="342" fill="#1F2E42" font-size="56" font-weight="800" font-family="Pretendard, 'Noto Sans KR', sans-serif">
+    로또 번호 추천
+  </text>
+  <text x="96" y="418" fill="#4D657D" font-size="34" font-weight="600" font-family="Pretendard, 'Noto Sans KR', sans-serif">
+    질문 3개로 오늘의 흐름에 맞는
+  </text>
+  <text x="96" y="464" fill="#4D657D" font-size="34" font-weight="600" font-family="Pretendard, 'Noto Sans KR', sans-serif">
+    번호 3세트를 받아보세요
+  </text>
+
+  <text x="990" y="515" text-anchor="middle" fill="#1F2E42" font-size="120">🍀</text>
+  <text x="1090" y="535" text-anchor="middle" fill="#1F2E42" font-size="80">✨</text>
+</svg>

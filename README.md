@@ -1,6 +1,10 @@
 ﻿# Lotto MVP
 
-`blueprint.md` 요구사항 기반의 로또 번호 추천 MVP입니다.
+`docs/planning/blueprint.md` 요구사항 기반의 로또 번호 추천 MVP입니다.
+
+문서 분리:
+- 질문 문항 관리: `docs/questions.md`
+- 기획 문서: `docs/planning/blueprint.md`, `docs/planning/v2.md`
 
 ## 기술 스택
 
