@@ -1,11 +1,18 @@
 ﻿import { useMemo, useState } from 'react'
-import { DISCLAIMER, QUESTIONS, RESULT_MESSAGE, SUBTITLE, TITLE } from './data/questions'
+import {
+  DISCLAIMER,
+  HERO_HINT,
+  QUESTION_HEADER,
+  QUESTIONS,
+  RESULT_MESSAGE,
+  SUBTITLE,
+  TITLE,
+} from './data/questions'
 import type { Question, SelectedAnswer, Step } from './types'
-import { buildSeed, formatCopyText, generateNumbers, generatePercent, pickQuestions } from './utils/lotto'
+import { buildSeed, formatCopyText, generateNumberSets, generatePercent, pickQuestions } from './utils/lotto'
 
 type ResultState = {
-  numbers: number[]
-  bonus: number[]
+  sets: number[][]
   percent: string
 }
 
@@ -53,14 +60,10 @@ function App() {
     setIsCalculating(true)
     try {
       const seed = buildSeed(nextSelected)
-      const [numbersResult, percent] = await Promise.all([
-        generateNumbers(seed),
-        generatePercent(seed),
-      ])
+      const [sets, percent] = await Promise.all([generateNumberSets(seed, 3), generatePercent(seed)])
 
       setResult({
-        numbers: numbersResult.numbers,
-        bonus: numbersResult.bonus,
+        sets,
         percent,
       })
       setStep('result')
@@ -75,7 +78,7 @@ function App() {
     }
 
     try {
-      await navigator.clipboard.writeText(formatCopyText(result.numbers, result.bonus))
+      await navigator.clipboard.writeText(formatCopyText(result.sets))
       setCopyStatus('done')
     } catch {
       setCopyStatus('fail')
@@ -89,6 +92,14 @@ function App() {
     setStep(1)
   }
 
+  function handleBack() {
+    if (typeof step !== 'number' || step <= 1) {
+      return
+    }
+    setSelected((prev) => prev.slice(0, -1))
+    setStep((step - 1) as Step)
+  }
+
   return (
     <main className="app-shell">
       <div className="bg-ornament bg-ornament-left" aria-hidden />
@@ -97,8 +108,12 @@ function App() {
       {step === 0 ? (
         <section className="panel hero-panel">
           <p className="hero-tag">Today&apos;s Lucky Mixer</p>
+          <p className="hero-icon" aria-hidden>
+            🎯🍀
+          </p>
           <h1>{TITLE}</h1>
           <p className="hero-subtitle">{SUBTITLE}</p>
+          <p className="hero-hint">{HERO_HINT}</p>
           <button className="primary-btn" type="button" onClick={handleStart}>
             시작하기
           </button>
@@ -107,7 +122,19 @@ function App() {
       ) : null}
 
       {typeof step === 'number' && step > 0 && currentQuestion ? (
-        <section className="panel question-panel" key={currentQuestion.id}>
+        <section className="panel question-panel" key={`${currentQuestion.id}-${step}`}>
+          <div className="question-nav">
+            <button
+              className="back-btn"
+              type="button"
+              onClick={handleBack}
+              disabled={step <= 1 || isCalculating}
+              aria-label="이전 질문으로 돌아가기"
+            >
+              ← 뒤로
+            </button>
+            <p className="mini-title">{QUESTION_HEADER}</p>
+          </div>
           <p className="progress">{step}/3</p>
           <h2>{currentQuestion.text}</h2>
           <div className="option-grid">
@@ -128,25 +155,28 @@ function App() {
 
       {step === 'result' && result ? (
         <section className="panel result-panel">
+          <p className="lucky-emoji" aria-hidden>
+            🍀✨
+          </p>
           <p className="result-title">{RESULT_MESSAGE}</p>
           <p className="result-percent">오늘 이 조합을 받은 사람 {result.percent}</p>
 
-          <div className="number-row" role="list" aria-label="추천 번호">
-            {result.numbers.map((value, idx) => (
-              <span className={`number-chip chip-${idx % 6}`} role="listitem" key={`main-${value}`}>
-                {value}
-              </span>
-            ))}
-          </div>
-
-          <p className="bonus-label">보조 번호</p>
-          <div className="number-row bonus-row" role="list" aria-label="보조 번호">
-            {result.bonus.map((value, idx) => (
-              <span className={`number-chip bonus-chip chip-${(idx + 2) % 6}`} role="listitem" key={`bonus-${value}`}>
-                {value}
-              </span>
-            ))}
-          </div>
+          {result.sets.map((set, setIndex) => (
+            <div className="set-block" key={`set-${setIndex + 1}`}>
+              <p className="set-label">추천 세트 {setIndex + 1}</p>
+              <div className="number-row" role="list" aria-label={`추천 번호 세트 ${setIndex + 1}`}>
+                {set.map((value, idx) => (
+                  <span
+                    className={`number-chip chip-${idx % 6}`}
+                    role="listitem"
+                    key={`set-${setIndex + 1}-num-${value}`}
+                  >
+                    {value}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
 
           <div className="action-row">
             <button className="primary-btn" type="button" onClick={() => void handleCopy()}>

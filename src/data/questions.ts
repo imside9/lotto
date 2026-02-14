@@ -2,6 +2,8 @@
 
 export const TITLE = '지금 이 순간!'
 export const SUBTITLE = '로또 번호 추천'
+export const HERO_HINT = '당신의 지금 상황에 딱 맞는 번호를 추천해드려요!'
+export const QUESTION_HEADER = '🍀 행운을 빚기 위한 상태 체크 중!'
 export const RESULT_MESSAGE = '지금 당신의 상태에 딱 맞는 로또 조합을 찾았어요!'
 export const DISCLAIMER = '본 서비스는 재미용이며 실제 당첨 확률과 무관합니다.'
 

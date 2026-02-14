@@ -93,8 +93,18 @@ h1 {
 }
 
 .hero-subtitle {
-  margin: 0 0 24px;
+  margin: 0 0 10px;
   font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.hero-icon {
+  margin: 8px 0 0;
+  font-size: 1.4rem;
+}
+
+.hero-hint {
+  margin: 0 0 20px;
   color: var(--text-muted);
 }
 
@@ -134,6 +144,34 @@ h1 {
   margin: 10px 0 18px;
   font-size: clamp(1.4rem, 3.6vw, 1.9rem);
   line-height: 1.35;
+}
+
+.question-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.back-btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.back-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mini-title {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
 }
 
 .progress {
@@ -231,16 +269,19 @@ h1 {
   background: var(--chip-f);
 }
 
-.bonus-label {
-  margin: 18px 0 8px;
+.set-block + .set-block {
+  margin-top: 14px;
+}
+
+.set-label {
+  margin: 0 0 8px;
   color: var(--text-muted);
   font-weight: 700;
 }
 
-.bonus-chip {
-  width: 46px;
-  height: 46px;
-  font-size: 1rem;
+.lucky-emoji {
+  margin: 0 0 6px;
+  font-size: 2rem;
 }
 
 .action-row {

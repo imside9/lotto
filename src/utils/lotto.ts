@@ -41,16 +41,16 @@ export function buildSeed(selected: SelectedAnswer[], date = new Date()): string
   return `${answerPart}|${formatDateSeed(date)}`
 }
 
-export async function generateNumbers(seed: string): Promise<{ numbers: number[]; bonus: number[] }> {
+async function generateSet(seed: string): Promise<number[]> {
   const picked = new Set<number>()
   let round = 0
 
-  while (picked.size < 8) {
+  while (picked.size < 6) {
     const hashBytes = await digestText(`${seed}|${round}`)
 
     for (const byte of hashBytes) {
       picked.add((byte % 45) + 1)
-      if (picked.size === 8) {
+      if (picked.size === 6) {
         break
       }
     }
@@ -58,11 +58,16 @@ export async function generateNumbers(seed: string): Promise<{ numbers: number[]
     round += 1
   }
 
-  const values = Array.from(picked)
-  const numbers = values.slice(0, 6).sort((a, b) => a - b)
-  const bonus = values.slice(6, 8).sort((a, b) => a - b)
+  return Array.from(picked).sort((a, b) => a - b)
+}
 
-  return { numbers, bonus }
+export async function generateNumberSets(seed: string, count = 3): Promise<number[][]> {
+  const sets: number[][] = []
+  for (let i = 0; i < count; i += 1) {
+    const set = await generateSet(`${seed}|set:${i}`)
+    sets.push(set)
+  }
+  return sets
 }
 
 export async function generatePercent(seed: string): Promise<string> {
@@ -79,6 +84,6 @@ export async function generatePercent(seed: string): Promise<string> {
   return `${percent}%`
 }
 
-export function formatCopyText(numbers: number[], bonus: number[]): string {
-  return `메인: ${numbers.join(' ')} | 보조: ${bonus.join(' ')}`
+export function formatCopyText(sets: number[][]): string {
+  return sets.map((set, idx) => `세트${idx + 1}: ${set.join(' ')}`).join(' / ')
 }
